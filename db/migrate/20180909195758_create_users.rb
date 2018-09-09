@@ -1,6 +1,6 @@
 class CreateUsers < ActiveRecord::Migration[5.2]
-  def change
-    create_table :users do |t|
+  def up
+    create_table :users, id: :uuid do |t|
       t.string :first_name
       t.string :last_name
       t.string :email
@@ -9,5 +9,9 @@ class CreateUsers < ActiveRecord::Migration[5.2]
 
       t.timestamps
     end
+  end
+
+  def down
+    drop_table :users
   end
 end
