@@ -10,11 +10,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_12_111156) do
+ActiveRecord::Schema.define(version: 2018_09_15_152117) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "addresses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id"
+    t.string "address_1"
+    t.string "address_2"
+    t.string "city"
+    t.string "province"
+    t.string "country"
+    t.string "postal_code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_addresses_on_user_id"
+  end
+
+  create_table "appointment_histories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "appointment_id"
+    t.string "appointment_status"
+    t.string "appointment_type"
+    t.jsonb "metadata"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["appointment_id"], name: "index_appointment_histories_on_appointment_id"
+  end
 
   create_table "appointments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "professional_id"
@@ -106,13 +129,26 @@ ActiveRecord::Schema.define(version: 2018_09_12_111156) do
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
-    t.string "email"
+    t.string "email", default: "", null: false
     t.date "dob"
     t.string "gender"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.inet "current_sign_in_ip"
+    t.inet "last_sign_in_ip"
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "addresses", "users"
+  add_foreign_key "appointment_histories", "appointments"
   add_foreign_key "appointments", "clients"
   add_foreign_key "appointments", "professionals"
   add_foreign_key "credit_cards", "clients"
