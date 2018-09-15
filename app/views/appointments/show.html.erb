@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Professional:</strong>
+  <%= @appointment.professional %>
+</p>
+
+<p>
+  <strong>Client:</strong>
+  <%= @appointment.client %>
+</p>
+
+<p>
+  <strong>Appointment type:</strong>
+  <%= @appointment.appointment_type %>
+</p>
+
+<p>
+  <strong>Client status:</strong>
+  <%= @appointment.client_status %>
+</p>
+
+<p>
+  <strong>Professional status:</strong>
+  <%= @appointment.professional_status %>
+</p>
+
+<p>
+  <strong>Metadata:</strong>
+  <%= @appointment.metadata %>
+</p>
+
+<p>
+  <strong>Rating:</strong>
+  <%= @appointment.rating %>
+</p>
+
+<p>
+  <strong>Fees:</strong>
+  <%= @appointment.fees %>
+</p>
+
+<p>
+  <strong>Start at:</strong>
+  <%= @appointment.start_at %>
+</p>
+
+<p>
+  <strong>End at:</strong>
+  <%= @appointment.end_at %>
+</p>
+
+<%= link_to 'Edit', edit_appointment_path(@appointment) %> |
+<%= link_to 'Back', appointments_path %>

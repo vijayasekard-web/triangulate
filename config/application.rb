@@ -29,5 +29,12 @@ module Triangulate
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    config.generators do |generate|
+      generate.orm :active_record, primary_key_type: :uuid
+      generate.javascript_engine :js
+      generate.view_specs false
+      generate.assets false
+    end
   end
 end

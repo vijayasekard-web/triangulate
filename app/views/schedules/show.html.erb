@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Professional:</strong>
+  <%= @schedule.professional %>
+</p>
+
+<p>
+  <strong>Work date:</strong>
+  <%= @schedule.work_date %>
+</p>
+
+<p>
+  <strong>Time slots:</strong>
+  <%= @schedule.time_slots %>
+</p>
+
+<%= link_to 'Edit', edit_schedule_path(@schedule) %> |
+<%= link_to 'Back', schedules_path %>

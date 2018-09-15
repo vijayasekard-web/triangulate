@@ -1,0 +1,67 @@
+<%= form_with(model: appointment, local: true) do |form| %>
+  <% if appointment.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(appointment.errors.count, "error") %> prohibited this appointment from being saved:</h2>
+
+      <ul>
+      <% appointment.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :professional_id %>
+    <%= form.text_field :professional_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :client_id %>
+    <%= form.text_field :client_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :appointment_type %>
+    <%= form.text_field :appointment_type %>
+  </div>
+
+  <div class="field">
+    <%= form.label :client_status %>
+    <%= form.check_box :client_status %>
+  </div>
+
+  <div class="field">
+    <%= form.label :professional_status %>
+    <%= form.check_box :professional_status %>
+  </div>
+
+  <div class="field">
+    <%= form.label :metadata %>
+    <%= form.text_field :metadata %>
+  </div>
+
+  <div class="field">
+    <%= form.label :rating %>
+    <%= form.number_field :rating %>
+  </div>
+
+  <div class="field">
+    <%= form.label :fees %>
+    <%= form.text_field :fees %>
+  </div>
+
+  <div class="field">
+    <%= form.label :start_at %>
+    <%= form.datetime_select :start_at %>
+  </div>
+
+  <div class="field">
+    <%= form.label :end_at %>
+    <%= form.datetime_select :end_at %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
