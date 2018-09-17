@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
 
-devise_for :users, controllers: { sessions: 'users/sessions' }
+  use_doorkeeper do
+    skip_controllers :appointments, :schedules, :clients, :professionals, :users
+  end
+  devise_for :users, controllers: { sessions: 'users/sessions' }
 
   devise_scope :user do
     get 'sign_in', to: 'devise/sessions#new'
