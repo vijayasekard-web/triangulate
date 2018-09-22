@@ -18,6 +18,7 @@ Rails.application.routes.draw do
     namespace :api, defaults: { format: :json }, constraints: { id: UUID_regex } do
       namespace :v1 do
         resource :sessions, only: [ :create ]
+        resource :users, only: [ :create, :update, :destroy ]
       end
     end
   end
