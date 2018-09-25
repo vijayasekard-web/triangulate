@@ -13,4 +13,6 @@ class User < ApplicationRecord
                            dependent: :delete_all # or :destroy if you need callbacks
 
   GENDER_TYPES = ["Not telling","Male", "Female"]
+
+   validates :email, presence: true
 end

@@ -1,6 +1,7 @@
 class Api::V1::UsersController < Api::V1::BaseController
 
   include UsersHelper
+  include ApiHelper
 
   skip_before_action :verify_authenticity_token
   skip_before_action :doorkeeper_authorize!, only: [:create]
@@ -20,10 +21,29 @@ class Api::V1::UsersController < Api::V1::BaseController
     end
   end
 
+
+  def update
+    if @user = current_user
+      respond_to do |format|
+        if @user.update_attributes(user_update_params)
+          format.json { render :show, status: :created, location: @user }
+        else
+          respond_with_validation_errors(@user.errors)
+        end
+      else
+        #respond_with_resource_not_found(User)
+      end
+    end
+  end
+
   private
 
   def user_params
     params.require(:user).permit(:email, :password, :password_confirmation, :dob, :gender, :first_name, :last_name)
+  end
+
+  def user_update_params
+    params.require(:user).permit(:dob, :gender, :first_name, :last_name)
   end
 end
 
