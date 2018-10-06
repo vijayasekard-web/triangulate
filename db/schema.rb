@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_16_020400) do
+ActiveRecord::Schema.define(version: 2018_09_30_032635) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -63,6 +63,8 @@ ActiveRecord::Schema.define(version: 2018_09_16_020400) do
     t.string "health_card"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "user_id"
+    t.index ["user_id"], name: "index_clients_on_user_id"
   end
 
   create_table "credit_cards", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -148,7 +150,7 @@ ActiveRecord::Schema.define(version: 2018_09_16_020400) do
     t.uuid "user_id"
     t.string "license_id"
     t.boolean "is_licensed"
-    t.boolean "is_active"
+    t.boolean "is_active", default: false
     t.string "postal_code"
     t.integer "radius"
     t.datetime "created_at", null: false
@@ -192,6 +194,7 @@ ActiveRecord::Schema.define(version: 2018_09_16_020400) do
   add_foreign_key "appointment_histories", "appointments"
   add_foreign_key "appointments", "clients"
   add_foreign_key "appointments", "professionals"
+  add_foreign_key "clients", "users"
   add_foreign_key "credit_cards", "clients"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_grants", "users", column: "resource_owner_id"

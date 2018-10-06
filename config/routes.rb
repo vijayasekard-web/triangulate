@@ -19,6 +19,8 @@ Rails.application.routes.draw do
       namespace :v1 do
         resource :sessions, only: [ :create ]
         resource :users, only: [ :create, :update, :destroy ]
+        resource :professionals, only: [ :create, :update, :destroy ]
+        resource :clients, only: [ :create, :update, :destroy ]
       end
     end
   end
