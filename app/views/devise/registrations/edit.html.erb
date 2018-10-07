@@ -31,6 +31,12 @@
     <%= f.password_field :current_password, autocomplete: "current-password" %>
   </div>
 
+  <div class="field">
+    <%= f.label :time_zone %><br />
+    <%= f.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones,
+      { default: 'Eastern Time (US & Canada)' } %>
+  </div>
+
   <div class="actions">
     <%= f.submit "Update" %>
   </div>

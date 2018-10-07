@@ -14,7 +14,7 @@ class Api::V1::UsersController < Api::V1::BaseController
 
     respond_to do |format|
       if @user.save
-        format.json { render :show, status: :created, location: @user }
+        format.json { render :show, status: :created }
       else
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
@@ -39,11 +39,11 @@ class Api::V1::UsersController < Api::V1::BaseController
   private
 
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation, :dob, :gender, :first_name, :last_name)
+    params.require(:user).permit(:email, :password, :password_confirmation, :dob, :gender, :first_name, :last_name, :time_zone)
   end
 
   def user_update_params
-    params.require(:user).permit(:dob, :gender, :first_name, :last_name)
+    params.require(:user).permit(:dob, :gender, :first_name, :last_name, :time_zone)
   end
 end
 
