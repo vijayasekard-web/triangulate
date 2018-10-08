@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_06_225810) do
+ActiveRecord::Schema.define(version: 2018_10_08_003605) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -32,10 +32,9 @@ ActiveRecord::Schema.define(version: 2018_10_06_225810) do
   create_table "appointment_histories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "appointment_id"
     t.string "appointment_status"
-    t.string "appointment_type"
-    t.jsonb "metadata"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "raw_data"
     t.index ["appointment_id"], name: "index_appointment_histories_on_appointment_id"
   end
 
@@ -43,8 +42,6 @@ ActiveRecord::Schema.define(version: 2018_10_06_225810) do
     t.uuid "professional_id"
     t.uuid "client_id"
     t.string "appointment_type"
-    t.boolean "client_status"
-    t.boolean "professional_status"
     t.jsonb "metadata"
     t.integer "rating"
     t.decimal "fees"
@@ -52,8 +49,13 @@ ActiveRecord::Schema.define(version: 2018_10_06_225810) do
     t.datetime "end_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "profession_type_id"
+    t.date "work_date"
+    t.integer "status", default: 0, null: false
+    t.uuid "matching_schedule_id"
     t.index ["client_id"], name: "index_appointments_on_client_id"
-    t.index ["professional_id", "client_id"], name: "index_appointments_on_professional_id_and_client_id", unique: true
+    t.index ["profession_type_id"], name: "index_appointments_on_profession_type_id"
+    t.index ["professional_id", "client_id"], name: "index_appointments_on_professional_id_and_client_id"
     t.index ["professional_id"], name: "index_appointments_on_professional_id"
   end
 
@@ -164,9 +166,9 @@ ActiveRecord::Schema.define(version: 2018_10_06_225810) do
     t.date "work_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "start_time"
-    t.datetime "end_time"
-    t.index ["professional_id", "work_date"], name: "index_schedules_on_professional_id_and_work_date", unique: true
+    t.datetime "start_at"
+    t.datetime "end_at"
+    t.index ["professional_id", "work_date"], name: "index_schedules_on_professional_id_and_work_date"
     t.index ["professional_id"], name: "index_schedules_on_professional_id"
   end
 
@@ -195,6 +197,7 @@ ActiveRecord::Schema.define(version: 2018_10_06_225810) do
   add_foreign_key "addresses", "users"
   add_foreign_key "appointment_histories", "appointments"
   add_foreign_key "appointments", "clients"
+  add_foreign_key "appointments", "profession_types"
   add_foreign_key "appointments", "professionals"
   add_foreign_key "clients", "users"
   add_foreign_key "credit_cards", "clients"

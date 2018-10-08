@@ -21,6 +21,7 @@ Rails.application.routes.draw do
         resource :users, only: [ :create, :update, :destroy ]
         resource :professionals, only: [ :create, :update, :destroy ]
         resource :clients, only: [ :create, :update, :destroy ]
+        resource :appointments, only: [ :create, :update, :destroy ]
       end
     end
   end
