@@ -2,10 +2,14 @@ class Appointment < ApplicationRecord
   belongs_to :professional
   belongs_to :client
 
+  include SchedulesHelper
+
   attr_accessor :initiated_by, :review
   before_validation :set_attributes
+  validate :if_schedule_available?
   before_save :add_schedule, if: :new_record?
   before_save :update_schedule, unless: :new_record?
+  after_commit :update_matching_appointment_id, on: :create
 
   private
 
@@ -15,6 +19,14 @@ class Appointment < ApplicationRecord
                       initiated_by: initiated_by,
                       review: review
                     }
+  end
+
+  def if_schedule_available?
+    schedules = Schedule.where(professional_id: professional_id, work_date: "2018-10-18").where.not("start_at >= ? OR end_at <= ?", end_at, start_at)
+    if schedules.count > 0
+      self.errors.add :start_at, 'no schedule available'
+      self.errors.add :end_at, 'no schedule available'
+    end
   end
 
   def add_schedule
@@ -32,5 +44,13 @@ class Appointment < ApplicationRecord
          end
       end
     end
+  end
+
+  def update_matching_appointment_id
+    Schedule.find(self.matching_schedule_id).tap do |schedule|
+           schedule.matching_appointment_id = self.id
+           schedule.description = "You are meeting someone at this time"
+           schedule.save!
+     end
   end
 end

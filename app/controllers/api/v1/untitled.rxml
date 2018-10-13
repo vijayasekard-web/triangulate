@@ -1,0 +1,10 @@
+start_at = "2018-10-18 10:15:00"
+end_at = "2018-10-18 10:45:00"
+professional_id = "5ea1f817-1f9a-409d-9e77-7de6371b23eb"
+
+schedules = Schedule.where(professional_id: professional_id, work_date: "2018-10-18").
+      where.not("start_at >= ? OR end_at <= ?", end_at, start_at)
+
+
+
+

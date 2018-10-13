@@ -12,7 +12,10 @@ class User < ApplicationRecord
                            foreign_key: :resource_owner_id,
                            dependent: :delete_all # or :destroy if you need callbacks
 
-  GENDER_TYPES = ["Not telling","Male", "Female"]
+  validates :email, presence: true
 
-   validates :email, presence: true
+  #accepts_nested_attributes_for :addresses
+
+  GENDER_TYPES = ["Not telling","Male","Female"]
+
 end
