@@ -24,6 +24,8 @@ Rails.application.routes.draw do
         resource :appointments, only: [ :create, :update, :destroy ]
         #resource :schedules, only: [ :show, :index ]
         post 'schedules', :to => 'schedules#get_schedule'
+        post 'add_schedule', :to => 'schedules#add_schedule'
+        post 'find_professional', :to => 'professionals#find_professional'
       end
     end
   end

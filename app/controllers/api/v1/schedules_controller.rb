@@ -14,6 +14,16 @@ class Api::V1::SchedulesController < Api::V1::BaseController
     end
   end
 
+  def add_schedule
+    work_date = Date.parse schedule_params[:start_date]
+    @schedule = Schedule.create(professional_id: schedule_params[:professional_id],
+      work_date: work_date, start_at: schedule_params[:start_date],
+      end_at: schedule_params[:end_date], description: schedule_params[:desc])
+    respond_to do |format|
+     format.json { render :show, status: :ok}
+    end
+  end
+
   private
 
   def schedule_params

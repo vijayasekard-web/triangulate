@@ -4,6 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   has_one :professional
+  has_one :clinet
+  has_many :addresses
   has_many :access_grants, class_name: "Doorkeeper::AccessGrant",
                            foreign_key: :resource_owner_id,
                            dependent: :delete_all # or :destroy if you need callbacks
@@ -14,7 +16,7 @@ class User < ApplicationRecord
 
   validates :email, presence: true
 
-  #accepts_nested_attributes_for :addresses
+  accepts_nested_attributes_for :addresses
 
   GENDER_TYPES = ["Not telling","Male","Female"]
 

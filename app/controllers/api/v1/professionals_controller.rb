@@ -35,6 +35,31 @@ class Api::V1::ProfessionalsController < Api::V1::BaseController
     end
   end
 
+  def find_professional
+    begin
+      work_date = Date.parse find_professional_params[:start_at]
+      professional_not_available = Schedule.where(work_date: work_date).where.
+        not("start_at >= ? OR end_at <= ?", find_professional_params[:end_at],
+          find_professional_params[:start_at]).distinct.pluck(:professional_id)
+      @professional = Professional.where.not(id: professional_not_available).first
+      if address_id.present?
+        @address = Address.find(address_id)
+      else
+        @address = Address.create!(find_professional_address_attributes)
+      end
+      respond_to do |format|
+        if @professional.present?
+          format.json { render :find, status: :created, location: @professional }
+        else
+          format.json { render json: {errors: "No professional found"}, status: :not_found }
+        end
+      rescue StandardError => error
+        error.backtrace
+        format.json { render json: {errors: "Unexpected_error"}, status: :internal_server_error }
+      end
+    end
+  end
+
   private
 
   def professional_params
@@ -43,7 +68,34 @@ class Api::V1::ProfessionalsController < Api::V1::BaseController
   end
 
   def professional_update_params
-    params.require(:professional).permit(:id,:license_id, :is_active, :postal_code, :radius)
+    params.require(:professional).permit(:id,:license_id, :is_active, :postal_code,
+      :radius)
+  end
+
+  def find_professional_params
+    params.require(:professional).permit(:start_at, :end_at, addresses_attributes: addresses_attributes)
+  end
+
+  def address_id
+    find_professional_params[:addresses_attributes][:id]
+  end
+
+  def find_professional_address_attributes
+    find_professional_params[:addresses_attributes].merge(user_id: current_user.id)
+  end
+
+  def addresses_attributes
+    [
+      :id,
+      :user_id,
+      :address_1,
+      :address_2,
+      :city,
+      :province,
+      :country,
+      :postal_code,
+      :favorite
+    ]
   end
 end
 

@@ -39,20 +39,29 @@ class Api::V1::UsersController < Api::V1::BaseController
   private
 
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation, :dob, :gender, :first_name, :last_name, :time_zone)
+    params.require(:user).permit(:email, :password, :password_confirmation, :dob,
+        :gender, :first_name, :last_name, :time_zone, addresses_attributes: addresses_attributes)
   end
 
   def user_update_params
-    params.require(:user).permit(:dob, :gender, :first_name, :last_name, :time_zone)
+    params.require(:user).permit(:id, :dob, :gender, :first_name, :last_name, :time_zone,
+      addresses_attributes: addresses_attributes)
+  end
+
+  def addresses_attributes
+    [
+      :id,
+      :user_id,
+      :address_1,
+      :address_2,
+      :city,
+      :province,
+      :country,
+      :postal_code,
+      :favorite
+    ]
   end
 end
 
 
-  # def create
-  #   super do |user|
-  #     @user = user
-  #     puts "User email is #{user.first_name}"
-  #   end
-  #    render json: {user_name: "hi", first_name: "Hi"}
-  #   # render json: {user_name: @user.email, first_name: @user.first_name}.to_json, status: :ok
-  # end
+
