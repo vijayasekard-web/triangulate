@@ -45,13 +45,3 @@ class Api::V1::ClientsController < Api::V1::BaseController
     params.require(:client).permit(:id, :client_type, :facility, :health_card)
   end
 end
-
-
-  # def create
-  #   super do |client|
-  #     @client = client
-  #     puts "client email is #{client.first_name}"
-  #   end
-  #    render json: {client_name: "hi", first_name: "Hi"}
-  #   # render json: {client_name: @client.email, first_name: @client.first_name}.to_json, status: :ok
-  # end

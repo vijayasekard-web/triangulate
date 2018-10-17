@@ -11,6 +11,8 @@ class Appointment < ApplicationRecord
   before_save :update_schedule, unless: :new_record?
   after_commit :update_matching_appointment_id, on: :create
 
+  APPOINTMENT_STATUS = { pending: 0, confirmed: 1, cancelled: 2 }
+
   private
 
   def set_attributes

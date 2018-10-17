@@ -19,7 +19,6 @@ class Api::V1::AppointmentsController < Api::V1::BaseController
     end
   end
 
-
   def update
     if @appointment = Appointment.find(appointment_update_params[:id])
       respond_to do |format|
@@ -38,21 +37,11 @@ class Api::V1::AppointmentsController < Api::V1::BaseController
 
   def appointment_params
     params.require(:appointment).permit(:professional_id, :client_id, :appointment_type,
-      :status, :rating, :profession_type_id, :fees, :start_at, :end_at, :initiated_by, :review)
+      :status, :rating, :profession_type_id, :fees, :start_at, :end_at, :initiated_by, :review, :address_id)
   end
 
   def appointment_update_params
     params.require(:appointment).permit(:id, :appointment_type, :status, :rating,
-      :fees, :start_at, :end_at, :initiated_by, :review)
+      :fees, :start_at, :end_at, :initiated_by, :review, :address_id)
   end
 end
-
-
-  # def create
-  #   super do |appointment|
-  #     @appointment = appointment
-  #     puts "appointment email is #{appointment.first_name}"
-  #   end
-  #    render json: {appointment_name: "hi", first_name: "Hi"}
-  #   # render json: {appointment_name: @appointment.email, first_name: @appointment.first_name}.to_json, status: :ok
-  # end

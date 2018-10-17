@@ -54,6 +54,8 @@ ActiveRecord::Schema.define(version: 2018_10_13_221532) do
     t.date "work_date"
     t.integer "status", default: 0, null: false
     t.uuid "matching_schedule_id"
+    t.uuid "address_id"
+    t.index ["address_id"], name: "index_appointments_on_address_id"
     t.index ["client_id"], name: "index_appointments_on_client_id"
     t.index ["profession_type_id"], name: "index_appointments_on_profession_type_id"
     t.index ["professional_id", "client_id"], name: "index_appointments_on_professional_id_and_client_id"
