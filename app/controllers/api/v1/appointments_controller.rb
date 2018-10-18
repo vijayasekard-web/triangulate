@@ -33,6 +33,24 @@ class Api::V1::AppointmentsController < Api::V1::BaseController
     end
   end
 
+  def get_professional_appointments
+    @appointment = Appointment.where(professional_id: get_professional_appointments_params[:professional_id]).
+      where("work_date >= ? AND work_date <= ?", get_professional_appointments_params[:start_at],
+        get_professional_appointments_params[:end_at])
+    respond_to do |format|
+     format.json { render :show, status: :ok}
+    end
+  end
+
+  def get_client_appointments
+    @appointment = Appointment.where(client_id: get_client_appointments_params[:client_id]).
+      where("work_date >= ? AND work_date <= ?", get_client_appointments_params[:start_at],
+        get_client_appointments_params[:end_at])
+    respond_to do |format|
+     format.json { render :show, status: :ok}
+    end
+  end
+
   private
 
   def appointment_params
@@ -43,5 +61,13 @@ class Api::V1::AppointmentsController < Api::V1::BaseController
   def appointment_update_params
     params.require(:appointment).permit(:id, :appointment_type, :status, :rating,
       :fees, :start_at, :end_at, :initiated_by, :review, :address_id)
+  end
+
+  def get_professional_appointments_params
+    params.require(:appointment).permit(:professional_id, :start_at, :end_at)
+  end
+
+  def get_client_appointments_params
+    params.require(:appointment).permit(:client_id, :start_at, :end_at)
   end
 end
