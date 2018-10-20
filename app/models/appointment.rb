@@ -37,15 +37,20 @@ class Appointment < ApplicationRecord
   end
 
   def update_schedule
-    if self.start_at_changed? || self.end_at_changed?
-      unless self.matching_schedule_id.blank?
-         Schedule.find(self.matching_schedule_id).tap do |schedule|
-           schedule.start_at = self.start_at
-           schedule.end_at = self.end_at
-           schedule.save!
-         end
+    if self.status == APPOINTMENT_STATUS[:cancelled]
+      Schedule.find(self.matching_schedule_id).destroy!
+    else
+      if self.start_at_changed? || self.end_at_changed?
+        unless self.matching_schedule_id.blank?
+           Schedule.find(self.matching_schedule_id).tap do |schedule|
+             schedule.start_at = self.start_at
+             schedule.end_at = self.end_at
+             schedule.save!
+           end
+        end
       end
     end
+
   end
 
   def update_matching_appointment_id
