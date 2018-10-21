@@ -34,6 +34,18 @@ class Api::V1::ClientsController < Api::V1::BaseController
     end
   end
 
+  def get_client_details
+    @client = Client.find(params[:client][:id])
+    respond_to do |format|
+      if @client.present?
+        # @addresses = @client.user.addresses
+        format.json { render :show, status: :created, location: @client }
+      else
+        format.json { render json: {errors: "No Client found"}, status: :not_found }
+      end
+    end
+  end
+
   private
 
   def client_params
