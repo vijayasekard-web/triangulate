@@ -23,10 +23,10 @@ class Api::V1::UsersController < Api::V1::BaseController
 
 
   def update
-    if @user = current_user
+    if @user = User.find(user_update_params[:id])
       respond_to do |format|
         if @user.update_attributes(user_update_params)
-          format.json { render :show, status: :created, location: @user }
+          format.json { render :show, status: :created }
         else
           respond_with_validation_errors(@user.errors)
         end

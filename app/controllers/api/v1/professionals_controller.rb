@@ -41,7 +41,11 @@ class Api::V1::ProfessionalsController < Api::V1::BaseController
       professional_not_available = Schedule.where(work_date: work_date).where.
         not("start_at >= ? OR end_at <= ?", find_professional_params[:end_at],
           find_professional_params[:start_at]).distinct.pluck(:professional_id)
-      @professional = Professional.where.not(id: professional_not_available).first
+      @available_professional = Professional.where.not(id: professional_not_available)
+      if is_gender_valid?(find_professional_params[:gender])
+        @available_professional = @available_professional.joins(:user).where("users.gender = ?", find_professional_params[:gender])
+      end
+      @professional = @available_professional.first
       if address_id.present?
         @address = Address.find(address_id)
       else
@@ -73,7 +77,7 @@ class Api::V1::ProfessionalsController < Api::V1::BaseController
   end
 
   def find_professional_params
-    params.require(:professional).permit(:start_at, :end_at, addresses_attributes: addresses_attributes)
+    params.require(:professional).permit(:start_at, :end_at, :gender, addresses_attributes: addresses_attributes)
   end
 
   def address_id
@@ -96,6 +100,10 @@ class Api::V1::ProfessionalsController < Api::V1::BaseController
       :postal_code,
       :favorite
     ]
+  end
+
+  def is_gender_valid?(gender)
+    gender.present? && ['Male', 'Female'].include?(gender)
   end
 end
 
