@@ -23,6 +23,7 @@ Rails.application.routes.draw do
         resource :clients, only: [ :create, :update, :destroy ]
         resource :appointments, only: [ :create, :update, :destroy ]
         resource :schedules, only: [ :create, :update, :destroy ]
+        post 'get_user_details', :to => 'users#get_user_details'
         post 'get_client_details', :to => 'clients#get_client_details'
         post 'get_schedule', :to => 'schedules#get_schedule'
         post 'find_professional', :to => 'professionals#find_professional'

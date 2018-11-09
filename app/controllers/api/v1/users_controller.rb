@@ -36,6 +36,16 @@ class Api::V1::UsersController < Api::V1::BaseController
     end
   end
 
+  def get_user_details
+    puts "ID is #{current_user.id}"
+    @user = current_user
+    @professional = current_user.professional
+    @client = current_user.client
+    respond_to do |format|
+      format.json { render :details, status: :created }
+    end
+  end
+
   private
 
   def user_params
